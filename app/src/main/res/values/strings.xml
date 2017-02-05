@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">quizdroid</string>
+    <string name="title_activity_topic_overview">TopicOverview</string>
+
+    <string-array name="topics">
+        <item>
+            Math
+        </item>
+        <item>
+            Physics
+        </item>
+        <item>
+            Marvel Super Heroes
+        </item>
+    </string-array>
 </resources>
