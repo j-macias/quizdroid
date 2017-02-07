@@ -3,6 +3,7 @@ package edu.washington.jmacias.quizdroid;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -13,15 +14,15 @@ public class QuestionActivity extends AppCompatActivity {
 
     public static final String TAG = "QuestionActivity";
     public static final String MESSAGE = "edu.washington.jmacias.quizdroid.QuestionActivity";
-    private int questionNumber;
-    private int questionsCorrect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
-        final int topicIndex = getIntent().getExtras().getInt(TopicOverviewActivity.MESSAGE);
         final String[] topics = getResources().getStringArray(R.array.topics);
+        final int topicIndex = getIntent().getExtras().getInt("topicIndex");
+        final int questionNumber = getIntent().getExtras().getInt("questionNumber");
+        final int questionsCorrect = getIntent().getExtras().getInt("questionsCorrect");
 
         TextView headerText = (TextView) findViewById(R.id.questionHeader);
         headerText.setText(topics[topicIndex] + " Question " + questionNumber + ":");
@@ -37,25 +38,26 @@ public class QuestionActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int answerID = optionRadioGroup.getCheckedRadioButtonId();
+                int answerID = optionRadioGroup.indexOfChild(findViewById(optionRadioGroup.
+                        getCheckedRadioButtonId()));
+                Log.i(TAG, "fhdks: " + answerID);
                 if (answerID > -1) {
                     Intent intent = new Intent(QuestionActivity.this, AnswerActivity.class);
                     intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
                     intent.putExtra("topicIndex", topicIndex);
                     intent.putExtra("questionNumber", questionNumber);
                     intent.putExtra("questionsCorrect", questionsCorrect);
-                    intent.putExtra("answerText", questionsOptions[topicIndex][questionNumber - 1]
-                            [optionRadioGroup.getCheckedRadioButtonId() + 1]);
-                    questionNumber++;
+                    intent.putExtra("userAnswer", questionsOptions[topicIndex][questionNumber - 1]
+                            [answerID + 1]);
                     startActivity(intent);
                 }
             }
         });
     }
 
-    //TODO: fix this gross data structure in to XML file
+    //TODO: fix this in to XML file
     private String[][][] questionsOptions = {
-            {
+            {                                               //Math
                     {
                             "What is 2 + 2?",
                             "22",
@@ -85,7 +87,7 @@ public class QuestionActivity extends AppCompatActivity {
                             "0"
                     }
             },
-            {
+            {                                               //Physics
                     {
                             "What is the speed of gravity on Earth?",
                             "9.81 m/s^2",
@@ -108,7 +110,7 @@ public class QuestionActivity extends AppCompatActivity {
                             "Jupiter"
                     }
             },
-            {
+            {                                               //Marvel Super Heroes
                     {
                             "Who of these superheroes were introduced first?",
                             "Captain America",

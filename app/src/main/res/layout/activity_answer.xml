@@ -10,34 +10,62 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.washington.jmacias.quizdroid.AnswerActivity">
 
-    <TextView
-        android:text="Your answer:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/header1"
-        android:textSize="28sp" />
+        android:layout_alignParentStart="true">
 
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/header1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/answeredText"
-        android:textSize="24sp" />
+        <TextView
+            android:text="Your answer:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/answerHeader"
+            android:textSize="28sp" />
 
-    <TextView
-        android:text="Correct answer:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/answeredText"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textView3" />
+        <TextView
+            android:text="answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/answeredText"
+            android:textSize="24sp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="18sp"
+            android:id="@+id/space"
+            android:layout_marginTop="38dp" />
+
+        <TextView
+            android:text="Correct answer:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/correctHeader"
+            android:textSize="28sp" />
+
+        <TextView
+            android:text="correct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/correctText"
+            android:textSize="24sp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="80sp"
+            android:id="@+id/space2" />
+
+        <TextView
+            android:text="You have X out of Y correct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:id="@+id/numberCorrectText"
+            android:textSize="24sp" />
+
+    </LinearLayout>
 
     <Button
         android:text="Next"
@@ -45,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/button"
+        android:id="@+id/nextButton"
         android:textSize="24sp" />
 
 </RelativeLayout>

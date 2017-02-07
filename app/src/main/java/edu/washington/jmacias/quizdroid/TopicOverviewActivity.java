@@ -36,7 +36,9 @@ public class TopicOverviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TopicOverviewActivity.this, QuestionActivity.class);
-                intent.putExtra(MESSAGE, topicIndex);
+                intent.putExtra("topicIndex", topicIndex);
+                intent.putExtra("questionsCorrect", 0);
+                intent.putExtra("questionNumber", 1);
                 startActivity(intent);
             }
         });
