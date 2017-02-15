@@ -51,16 +51,18 @@ public class QuestionFrag extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         final View questionView = inflater.inflate(R.layout.fragment_question, container, false);
+        TopicRepository topicRepository = new TopicRepository();
+        final Question question = topicRepository.getTopicList().get(topicIndex)
+                .getQuestionList().get(questionNumber - 1);
 
-        final String[] topics = getResources().getStringArray(R.array.topics);
         TextView headerText = (TextView) questionView.findViewById(R.id.questionHeader);
-        headerText.setText(topics[topicIndex] + " Question " + questionNumber + ":");
+        headerText.setText(topicRepository.getTopicTitles()[topicIndex] + " Question "
+                + questionNumber + ":");
         TextView questionText = (TextView) questionView.findViewById(R.id.questionText);
-        questionText.setText(questionsOptions[topicIndex][questionNumber - 1][0]);
+        questionText.setText(question.getQuestionText());
         final RadioGroup optionRadioGroup = (RadioGroup) questionView.findViewById(R.id.answerOptions);
         for (int i = 0; i < optionRadioGroup.getChildCount(); i++) {
-            ((RadioButton) optionRadioGroup.getChildAt(i)).setText(questionsOptions[topicIndex]
-                    [questionNumber - 1][i + 1]);
+            ((RadioButton) optionRadioGroup.getChildAt(i)).setText(question.getAnswers()[i]);
         }
 
         final Button submitButton = (Button) questionView.findViewById(R.id.submitButton);
@@ -70,8 +72,7 @@ public class QuestionFrag extends Fragment {
                 int answerID = optionRadioGroup.indexOfChild(questionView.findViewById(
                         optionRadioGroup.getCheckedRadioButtonId()));
                 if (answerID > -1) {
-                    mListener.onQuestionFragInteraction(questionsOptions[topicIndex]
-                            [questionNumber - 1][answerID + 1]);
+                    mListener.onQuestionFragInteraction(answerID);
                 }
             }
         });
@@ -96,86 +97,6 @@ public class QuestionFrag extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        void onQuestionFragInteraction(String answeredText);
+        void onQuestionFragInteraction(int answeredIndex);
     }
-
-    private String[][][] questionsOptions = {
-            {                                               //Math
-                    {
-                            "What is 2 + 2?",
-                            "22",
-                            "5, for extremely large values of 2",
-                            "4",
-                            "Fish"
-                    },
-                    {
-                            "What is 7 x 9?",
-                            "79",
-                            "63",
-                            "4",
-                            "54"
-                    },
-                    {
-                            "What is the derivative of 2x^3?",
-                            "6x^3",
-                            "6x^2",
-                            "(2x^2)/3",
-                            "3x^2"
-                    },
-                    {
-                            "What is the derivative of 7?",
-                            "1",
-                            "7x",
-                            "7x^2",
-                            "0"
-                    }
-            },
-            {                                               //Physics
-                    {
-                            "What is the speed of gravity on Earth?",
-                            "9.81 m/s^2",
-                            "-9.81 m/s^2",
-                            "8.72 m//s^2",
-                            "It has a speed?"
-                    },
-                    {
-                            "Which items falls fastest, assuming they are the same size?",
-                            "A 1 pound weight",
-                            "A 5 pound weight",
-                            "A 2000 pound weight",
-                            "They all fall at the same speed"
-                    },
-                    {
-                            "Which planet has the longest day (time to rotate about its axis)?",
-                            "Earth",
-                            "Mars",
-                            "Neptune",
-                            "Jupiter"
-                    }
-            },
-            {                                               //Marvel Super Heroes
-                    {
-                            "Who of these superheroes were introduced first?",
-                            "Captain America",
-                            "Iron Man",
-                            "The Incredible Hulk",
-                            "Wolverine"
-                    },
-                    {
-                            "Which superhero was featured in 2012's movie 'The Avengers'?",
-                            "Iron Man",
-                            "Thor",
-                            "Captain America",
-                            "All of the above"
-                    },
-                    {
-                            "When did the Black Widow make her debut?",
-                            "1956",
-                            "1959",
-                            "1962",
-                            "1964"
-                    }
-
-            },
-    };
 }

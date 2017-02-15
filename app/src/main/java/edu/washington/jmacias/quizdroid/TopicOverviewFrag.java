@@ -10,15 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class TopicOverviewFrag extends Fragment {
 
     private static final String TAG = "TopicOverviewFrag";
     private static final String ARG_TOPIC_INDEX = "topicIndex";
 
-    private Map<String, String> topicText = new HashMap<>();
     private int topicIndex;
 
     private OnFragmentInteractionListener mListener;
@@ -49,15 +46,12 @@ public class TopicOverviewFrag extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View topicOverviewView = inflater.inflate(R.layout.fragment_topic_overview, container,
                 false);
-        final String[] topics = getResources().getStringArray(R.array.topics);
-        topicText.put(topics[0], "Questions on math (4 questions)");
-        topicText.put(topics[1], "Questions on physics (3 questions)");
-        topicText.put(topics[2], "Questions on Marvel super heroes (3 questions)");
+        TopicRepository topicRepository = new TopicRepository();
 
         TextView title = (TextView) topicOverviewView.findViewById(R.id.title);
-        title.setText(topics[topicIndex]);
+        title.setText(topicRepository.getTopicTitles()[topicIndex]);
         TextView description = (TextView) topicOverviewView.findViewById(R.id.description);
-        description.setText(topicText.get(topics[topicIndex]));
+        description.setText(topicRepository.getTopicLongDescriptions()[topicIndex]);
 
         final Button beginButton = (Button) topicOverviewView.findViewById(R.id.beginButton);
         beginButton.setOnClickListener(new View.OnClickListener() {

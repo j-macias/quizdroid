@@ -20,7 +20,7 @@ public class AnswerFrag extends Fragment {
     private static final String ARG_QUESTION_NUMBER = "questionNumber";
     private static final String ARG_QUESTIONS_CORRECT = "questionsCorrect";
 
-    private String answeredText;
+    private int answeredIndex;
     private int topicIndex;
     private int questionNumber;
     private int questionsCorrect;
@@ -31,11 +31,11 @@ public class AnswerFrag extends Fragment {
         // Required empty public constructor
     }
 
-    public static AnswerFrag newInstance(String answeredText, int topicIndex, int questionNumber,
+    public static AnswerFrag newInstance(int answeredIndex, int topicIndex, int questionNumber,
                                          int questionsCorrect) {
         AnswerFrag fragment = new AnswerFrag();
         Bundle args = new Bundle();
-        args.putString(ARG_ANSWERED_TEXT, answeredText);
+        args.putInt(ARG_ANSWERED_TEXT, answeredIndex);
         args.putInt(ARG_TOPIC_INDEX, topicIndex);
         args.putInt(ARG_QUESTION_NUMBER, questionNumber);
         args.putInt(ARG_QUESTIONS_CORRECT, questionsCorrect);
@@ -47,7 +47,7 @@ public class AnswerFrag extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            answeredText = getArguments().getString(ARG_ANSWERED_TEXT);
+            answeredIndex = getArguments().getInt(ARG_ANSWERED_TEXT);
             topicIndex = getArguments().getInt(ARG_TOPIC_INDEX);
             questionNumber = getArguments().getInt(ARG_QUESTION_NUMBER);
             questionsCorrect = getArguments().getInt(ARG_QUESTIONS_CORRECT);
@@ -59,24 +59,28 @@ public class AnswerFrag extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         final View answerView = inflater.inflate(R.layout.fragment_answer, container, false);
+        TopicRepository topicRepository = new TopicRepository();
+        final Topic topic = topicRepository.getTopicList().get(topicIndex);
+        final Question question = topic.getQuestionList().get(questionNumber - 1);
+        final int correctIndex = question.getCorrectIndex();
 
         final int updatedQuestionsCorrect = questionsCorrect +
-                (answeredText.equals(answers[topicIndex][questionNumber - 1]) ? 1 : 0);
+                (answeredIndex == correctIndex ? 1 : 0);
         TextView answeredTextView = (TextView) answerView.findViewById(R.id.answeredText);
-        answeredTextView.setText(answeredText);
+        answeredTextView.setText(question.getAnswers()[answeredIndex]);
         TextView correctText = (TextView) answerView.findViewById(R.id.correctText);
-        correctText.setText(answers[topicIndex][questionNumber - 1]);
+        correctText.setText(question.getAnswers()[correctIndex]);
         TextView numberCorrectText = (TextView) answerView.findViewById(R.id.numberCorrectText);
         numberCorrectText.setText("You have " + updatedQuestionsCorrect + " out of "
                 + questionNumber + " correct");
         final Button nextButton = (Button) answerView.findViewById(R.id.nextButton);
-        if (questionNumber >= answers[topicIndex].length) {
+        if (questionNumber >= topic.getQuestionCount()) {
             nextButton.setText("Finish");
         }
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (questionNumber < answers[topicIndex].length) {
+                if (questionNumber < topic.getQuestionCount()) {
                     mListener.onAnswerFragInteraction(updatedQuestionsCorrect);
                 } else {
                     Intent intent = new Intent(getActivity(), MainActivity.class);
@@ -108,6 +112,7 @@ public class AnswerFrag extends Fragment {
         void onAnswerFragInteraction(int questionsCorrect);
     }
 
+    /*
     private String[][] answers = {
             {                           //Math
                     "4",
@@ -125,5 +130,5 @@ public class AnswerFrag extends Fragment {
                     "All of the above",
                     "1964"
             }
-    };
+    };*/
 }

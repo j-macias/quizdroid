@@ -47,8 +47,8 @@ public class MultiActivity extends Activity implements
     }
 
     @Override
-    public void onQuestionFragInteraction(String answeredText) {
-        AnswerFrag answerFrag = AnswerFrag.newInstance(answeredText, topicIndex, questionNumber,
+    public void onQuestionFragInteraction(int answeredIndex) {
+        AnswerFrag answerFrag = AnswerFrag.newInstance(answeredIndex, topicIndex, questionNumber,
                 questionsCorrect);
         transactFragment(answerFrag, false);
     }

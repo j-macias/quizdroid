@@ -16,13 +16,13 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        TopicRepository topicRepository = new TopicRepository();
 
         final ListView listView = (ListView) findViewById(R.id.topic_list);
-        String[] topics = getResources().getStringArray(R.array.topics);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
                 android.R.id.text1,
-                topics);
+                topicRepository.getTopicListText());
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
