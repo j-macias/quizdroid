@@ -1,14 +1,14 @@
 package edu.washington.jmacias.quizdroid;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     public static final String MESSAGE = "edu.washington.jmacias.quizdroid.MainActivity";
 
@@ -27,8 +27,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, TopicOverviewActivity.class);
-                intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                Intent intent = new Intent(MainActivity.this, MultiActivity.class);
                 intent.putExtra(MESSAGE, position);
                 startActivity(intent);
             }

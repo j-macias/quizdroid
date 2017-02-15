@@ -1,61 +1,104 @@
 package edu.washington.jmacias.quizdroid;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Context;
 import android.os.Bundle;
+import android.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-public class QuestionActivity extends AppCompatActivity {
 
-    public static final String TAG = "QuestionActivity";
-    public static final String MESSAGE = "edu.washington.jmacias.quizdroid.QuestionActivity";
+public class QuestionFrag extends Fragment {
+
+    private static final String TAG = "QuestionFrag";
+    private static final String ARG_TOPIC_INDEX = "topicIndex";
+    private static final String ARG_QUESTION_NUMBER = "questionNumber";
+
+    private int topicIndex;
+    private int questionNumber;
+
+    private OnFragmentInteractionListener mListener;
+
+    public QuestionFrag() {
+        // Required empty public constructor
+    }
+
+    public static QuestionFrag newInstance(int topicIndex, int questionNumber) {
+        QuestionFrag fragment = new QuestionFrag();
+        Bundle args = new Bundle();
+        args.putInt(ARG_TOPIC_INDEX, topicIndex);
+        args.putInt(ARG_QUESTION_NUMBER, questionNumber);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_question);
-        final String[] topics = getResources().getStringArray(R.array.topics);
-        final int topicIndex = getIntent().getExtras().getInt("topicIndex");
-        final int questionNumber = getIntent().getExtras().getInt("questionNumber");
-        final int questionsCorrect = getIntent().getExtras().getInt("questionsCorrect");
+        if (getArguments() != null) {
+            topicIndex = getArguments().getInt(ARG_TOPIC_INDEX);
+            questionNumber = getArguments().getInt(ARG_QUESTION_NUMBER);
+        }
+    }
 
-        TextView headerText = (TextView) findViewById(R.id.questionHeader);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        final View questionView = inflater.inflate(R.layout.fragment_question, container, false);
+
+        final String[] topics = getResources().getStringArray(R.array.topics);
+        TextView headerText = (TextView) questionView.findViewById(R.id.questionHeader);
         headerText.setText(topics[topicIndex] + " Question " + questionNumber + ":");
-        TextView questionText = (TextView) findViewById(R.id.questionText);
+        TextView questionText = (TextView) questionView.findViewById(R.id.questionText);
         questionText.setText(questionsOptions[topicIndex][questionNumber - 1][0]);
-        final RadioGroup optionRadioGroup = (RadioGroup) findViewById(R.id.answerOptions);
+        final RadioGroup optionRadioGroup = (RadioGroup) questionView.findViewById(R.id.answerOptions);
         for (int i = 0; i < optionRadioGroup.getChildCount(); i++) {
             ((RadioButton) optionRadioGroup.getChildAt(i)).setText(questionsOptions[topicIndex]
                     [questionNumber - 1][i + 1]);
         }
 
-        final Button submitButton = (Button) findViewById(R.id.submitButton);
+        final Button submitButton = (Button) questionView.findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int answerID = optionRadioGroup.indexOfChild(findViewById(optionRadioGroup.
-                        getCheckedRadioButtonId()));
-                Log.i(TAG, "fhdks: " + answerID);
+                int answerID = optionRadioGroup.indexOfChild(questionView.findViewById(
+                        optionRadioGroup.getCheckedRadioButtonId()));
                 if (answerID > -1) {
-                    Intent intent = new Intent(QuestionActivity.this, AnswerActivity.class);
-                    intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
-                    intent.putExtra("topicIndex", topicIndex);
-                    intent.putExtra("questionNumber", questionNumber);
-                    intent.putExtra("questionsCorrect", questionsCorrect);
-                    intent.putExtra("userAnswer", questionsOptions[topicIndex][questionNumber - 1]
-                            [answerID + 1]);
-                    startActivity(intent);
+                    mListener.onQuestionFragInteraction(questionsOptions[topicIndex]
+                            [questionNumber - 1][answerID + 1]);
                 }
             }
         });
+        return questionView;
     }
 
-    //TODO: fix this in to XML file
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnFragmentInteractionListener {
+        void onQuestionFragInteraction(String answeredText);
+    }
+
     private String[][][] questionsOptions = {
             {                                               //Math
                     {
