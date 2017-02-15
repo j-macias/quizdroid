@@ -9,12 +9,12 @@ public class QuizApp extends android.app.Application{
         Log.d("QuizApp", "QuizApp constructor fired");
     }
 
-    public TopicRepository getRepository() {
-        return instance;
-    }
-
     @Override
     public void onCreate() {
         Log.d("QuizApp", "QuizApp onCreate fired");
+    }
+
+    public TopicRepository getRepository() {
+        return instance;
     }
 }
