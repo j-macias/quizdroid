@@ -1,6 +1,14 @@
 package edu.washington.jmacias.quizdroid;
 
+import android.os.Message;
+import android.util.JsonReader;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
+
+import static java.lang.System.in;
 
 public class TopicRepository {
 
@@ -82,6 +90,17 @@ public class TopicRepository {
                     add(marvelQ3);}}
         );
         topicList.add(marvelTopic);
+
+        /*
+        public List<Message> readJsonStream(InputStream in) throws IOException {
+            JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
+            try {
+                return readMessagesArray(reader);
+            } finally {
+                reader.close();
+            }
+        }
+        */
     }
 
     public String[] getTopicTitles() {
