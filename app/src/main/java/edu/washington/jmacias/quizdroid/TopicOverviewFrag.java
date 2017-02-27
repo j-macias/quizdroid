@@ -44,14 +44,14 @@ public class TopicOverviewFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View topicOverviewView = inflater.inflate(R.layout.fragment_topic_overview, container,
-                false);
-        TopicRepository topicRepository = new TopicRepository();
+        QuizApp app = (QuizApp) getActivity().getApplicationContext();
+        View topicOverviewView = inflater.inflate(R.layout.fragment_topic_overview,
+                container, false);
 
         TextView title = (TextView) topicOverviewView.findViewById(R.id.title);
-        title.setText(topicRepository.getTopicTitles()[topicIndex]);
+        title.setText(app.getRepository().getTopicTitles()[topicIndex]);
         TextView description = (TextView) topicOverviewView.findViewById(R.id.description);
-        description.setText(topicRepository.getTopicLongDescriptions()[topicIndex]);
+        description.setText(app.getRepository().getTopicLongDescriptions()[topicIndex]);
 
         final Button beginButton = (Button) topicOverviewView.findViewById(R.id.beginButton);
         beginButton.setOnClickListener(new View.OnClickListener() {

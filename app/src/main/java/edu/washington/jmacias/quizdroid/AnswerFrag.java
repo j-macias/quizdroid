@@ -58,9 +58,9 @@ public class AnswerFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        QuizApp app = (QuizApp) getActivity().getApplicationContext();
         final View answerView = inflater.inflate(R.layout.fragment_answer, container, false);
-        TopicRepository topicRepository = new TopicRepository();
-        final Topic topic = topicRepository.getTopicList().get(topicIndex);
+        final Topic topic = app.getRepository().getTopicList().get(topicIndex);
         final Question question = topic.getQuestionList().get(questionNumber - 1);
         final int correctIndex = question.getCorrectIndex();
 

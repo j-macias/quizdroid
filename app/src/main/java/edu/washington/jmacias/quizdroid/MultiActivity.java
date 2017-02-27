@@ -3,11 +3,11 @@ package edu.washington.jmacias.quizdroid;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-public class MultiActivity extends Activity implements
+public class MultiActivity extends AppCompatActivity implements
         TopicOverviewFrag.OnFragmentInteractionListener,
         QuestionFrag.OnFragmentInteractionListener,
         AnswerFrag.OnFragmentInteractionListener {
@@ -16,6 +16,7 @@ public class MultiActivity extends Activity implements
     private int topicIndex;
     private int questionNumber;
     private int questionsCorrect;
+    public static TopicRepository topicRepository;
 
     @Override
     public void onBackPressed() {

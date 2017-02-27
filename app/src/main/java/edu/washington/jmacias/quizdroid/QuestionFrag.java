@@ -50,17 +50,18 @@ public class QuestionFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        QuizApp app = (QuizApp) getActivity().getApplicationContext();
         final View questionView = inflater.inflate(R.layout.fragment_question, container, false);
-        TopicRepository topicRepository = new TopicRepository();
-        final Question question = topicRepository.getTopicList().get(topicIndex)
+        final Question question = app.getRepository().getTopicList().get(topicIndex)
                 .getQuestionList().get(questionNumber - 1);
 
         TextView headerText = (TextView) questionView.findViewById(R.id.questionHeader);
-        headerText.setText(topicRepository.getTopicTitles()[topicIndex] + " Question "
+        headerText.setText(app.getRepository().getTopicTitles()[topicIndex] + " Question "
                 + questionNumber + ":");
         TextView questionText = (TextView) questionView.findViewById(R.id.questionText);
         questionText.setText(question.getQuestionText());
-        final RadioGroup optionRadioGroup = (RadioGroup) questionView.findViewById(R.id.answerOptions);
+        final RadioGroup optionRadioGroup = (RadioGroup)
+                questionView.findViewById(R.id.answerOptions);
         for (int i = 0; i < optionRadioGroup.getChildCount(); i++) {
             ((RadioButton) optionRadioGroup.getChildAt(i)).setText(question.getAnswers()[i]);
         }
